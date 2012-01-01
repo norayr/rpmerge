@@ -1,0 +1,66 @@
+
+History
+
+This program was created back in early 2000ies when there were no yum in redhat/fedora GNU/Linux distributions.
+
+Installing software was a pain: you had to download an rpm, then if it had dependencies, download them too, then download dependencies to install those dependencies.
+
+I didn't like it. I needed a system which is able to resolve dependencies automatically. It was actually available: apt for rpm. But only for already compiled binary packages.
+
+It may happen that the binary rpm is compiled for let's say, RHEL4, therefore it's linked against libraries in that distribution and may not install on EL3.
+In such cases it is convenient to recompile the src.rpm on your machine so if there are no interface changes the resulting binary will link and work on your system. 
+However, src.rpm's also have dependencies. And those dependencies also may have dependencies, und so weiter, und so weiter.
+
+That's why rpmerge is created.
+It will download src.rpm of a package and will try to build it. Then it parses the output of the rpmbuild and in case there are dependencies, it will recoursively download and build them.
+
+Dependensies:
+wget, libsysfs-devel, sysfsutils, coreutils
+
+Build time dependencies:
+Freepascal compiler ver 1.9 or higher.
+
+Install:
+Just compile it with
+fpc rpmerge.pas
+and copy to exec path:
+cp rpmerge /usr/local/bin/
+
+Usage:
+
+At the first start rpmerge creates a config file: /etc/rpmerge.conf
+
+There you can add/remove http/ftp paths to src.rpm repositories, choose optimization flags, etc.
+To choose right gcc flags you may consult http://en.gentoo-wiki.com/wiki/CFLAGS
+
+TODO:
+selecting configure options
+search option
+erase option
+upgrade option
+work as a non-root user
+
+Known bugs:
+sometimes rpmerge can't properly determine latest version
+for instance here 
+1   1.2.10-11.1
+2   1.2.10-9.2
+3   1.2.10-9
+
+License:
+GPLv3
+
+FAQ:
+
+Q: WTF, why pascal?
+A: Pascal is not my favourite language however I consider that it's way better than C and C++, and for sure more suited for academic way of programming.
+I have been written rpmerge in pascal because of the freepascal existence - very clever designed compiler I like a lot. (http://freepascal.org)
+This task could be implemented in shell, and it may seem to be easier(like working with strings), but as the software grows it's much harder to keep it bug free if it's written in shell, rather than in pascal, which is truly modular, well structured, strong typed, and have good libraries to work with those strings.
+Also, it's much more flexible than bash and perl.
+
+Q:  I don't want to have a zoo of programming languages on my pc.
+A: Comon, you already have perl, python, gcc, g++, bash, csh, tcl, and may be also gcj asd gnat.
+I like diversity. Diversity is what keeps us supeiour as a race. People think different, that's why different programming languages exist. I never can understand people who loves perl but it's nice that they exist. Imagine a world where people think same way and all of them use one "true" language. I don't like it.
+
+Q: and you call it academic? take a look on your code.
+A: yep. I've been written in the time I didn't have much experience and I may rewrite this from scratch in the fee time. Just it's not really actual for me now, because I use gentoo.
